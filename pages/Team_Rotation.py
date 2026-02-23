@@ -3,22 +3,21 @@ import pandas as pd
 import plotly.graph_objects as go
 from pathlib import Path
 
+from data_loader import load_data, data_available
+
 DATA_DIR = Path(__file__).parent.parent / "data"
 
+
 @st.cache_data
-def load_data():
-    schedule = pd.read_csv(DATA_DIR / "schedule.csv")
-    teams = pd.read_csv(DATA_DIR / "box_scores_teams.csv")
-    players = pd.read_csv(DATA_DIR / "box_scores_players.csv")
-
-    schedule["GAME_DATE"] = pd.to_datetime(schedule["GAME_DATE"])
-    for df in [schedule, teams, players]:
-        df["GAME_ID"] = df["GAME_ID"].astype(str).str.zfill(10)
-
-    return schedule, teams, players
+def get_data():
+    return load_data()
 
 
-schedule, teams_bs, players_bs = load_data()
+schedule, teams_bs, players_bs = get_data()
+
+if not data_available() or schedule.empty:
+    st.info("No data loaded. Add the `data/` folder (schedule.csv, box_scores_teams.csv, box_scores_players.csv) to the repo, or run the app locally after running the fetch scripts.")
+    st.stop()
 
 # ── Sidebar controls ─────────────────────────────────────────────────────────
 st.sidebar.title("Team Rotation")

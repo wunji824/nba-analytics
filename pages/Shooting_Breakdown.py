@@ -3,20 +3,21 @@ import streamlit.components.v1 as components
 import pandas as pd
 from pathlib import Path
 
+from data_loader import load_data, data_available
+
 DATA_DIR = Path(__file__).parent.parent / "data"
 
+
 @st.cache_data
-def load_data():
-    schedule = pd.read_csv(DATA_DIR / "schedule.csv")
-    players = pd.read_csv(DATA_DIR / "box_scores_players.csv")
-    teams_bs = pd.read_csv(DATA_DIR / "box_scores_teams.csv")
-    schedule["GAME_DATE"] = pd.to_datetime(schedule["GAME_DATE"])
-    for df in [schedule, players, teams_bs]:
-        df["GAME_ID"] = df["GAME_ID"].astype(str).str.zfill(10)
-    return schedule, players, teams_bs
+def get_data():
+    return load_data()
 
 
-schedule, players_bs, teams_bs = load_data()
+schedule, teams_bs, players_bs = get_data()
+
+if not data_available() or schedule.empty:
+    st.info("No data loaded. Add the `data/` folder (schedule.csv, box_scores_teams.csv, box_scores_players.csv) to the repo, or run the app locally after running the fetch scripts.")
+    st.stop()
 
 # ── Sidebar controls ─────────────────────────────────────────────────────────
 st.sidebar.title("Shooting Breakdown")

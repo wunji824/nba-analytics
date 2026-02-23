@@ -1,25 +1,19 @@
 import streamlit as st
 import pandas as pd
-from pathlib import Path
 
-DATA_DIR = Path(__file__).parent.parent / "data"
+from data_loader import load_data, data_available
 
 
 @st.cache_data
-def load_data():
-    schedule = pd.read_csv(DATA_DIR / "schedule.csv")
-    teams = pd.read_csv(DATA_DIR / "box_scores_teams.csv")
-    players = pd.read_csv(DATA_DIR / "box_scores_players.csv")
-
-    schedule["GAME_DATE"] = pd.to_datetime(schedule["GAME_DATE"])
-    schedule["GAME_ID"] = schedule["GAME_ID"].astype(str).str.zfill(10)
-    teams["GAME_ID"] = teams["GAME_ID"].astype(str).str.zfill(10)
-    players["GAME_ID"] = players["GAME_ID"].astype(str).str.zfill(10)
-
-    return schedule, teams, players
+def get_data():
+    return load_data()
 
 
-schedule, teams_bs, players_bs = load_data()
+schedule, teams_bs, players_bs = get_data()
+
+if not data_available() or schedule.empty:
+    st.info("No data loaded. Add the `data/` folder (schedule.csv, box_scores_teams.csv, box_scores_players.csv) to the repo, or run the app locally after running the fetch scripts.")
+    st.stop()
 
 # ── Sidebar: date picker ────────────────────────────────────────────────────
 st.sidebar.title("NBA Game Explorer")
