@@ -4,7 +4,9 @@ Shared data loading. Returns empty DataFrames with correct columns when data/ is
 import pandas as pd
 from pathlib import Path
 
-DATA_DIR = Path(__file__).parent / "data"
+# Repo root = directory containing app.py. Streamlit Cloud runs with cwd = repo root.
+# Use cwd so data/ is found when app is run from repo root (local or cloud).
+DATA_DIR = Path.cwd() / "data"
 
 SCHEDULE_COLS = "GAME_ID,GAME_DATE,SEASON,SEASON_ID,MATCHUP,WL,TEAM_ID,TEAM_ABBREVIATION,TEAM_NAME,PTS,MIN,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,STL,BLK,TOV,PF,PLUS_MINUS".split(",")
 TEAMS_COLS = "GAME_ID,TEAM_ID,TEAM_NAME,TEAM_ABBREVIATION,TEAM_CITY,MIN,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,STL,BLK,TO,PF,PTS,PLUS_MINUS".split(",")
