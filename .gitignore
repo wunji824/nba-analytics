@@ -1,5 +1,5 @@
-# Data (can be large)
-data/
+# Data (optional: remove the line below to track data/ so Streamlit Cloud has CSVs)
+# data/
 
 # Python
 .venv/

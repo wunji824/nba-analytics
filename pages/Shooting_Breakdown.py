@@ -16,7 +16,7 @@ def get_data():
 schedule, teams_bs, players_bs = get_data()
 
 if not data_available() or schedule.empty:
-    st.info("No data loaded. Add the `data/` folder (schedule.csv, box_scores_teams.csv, box_scores_players.csv) to the repo, or run the app locally after running the fetch scripts.")
+    st.info("No data loaded. Add the `data/` folder (schedule.csv, box_scores_teams.csv, box_scores_players.csv) to the repo for the deployed app, or run the fetch scripts locally.")
     st.stop()
 
 # ── Sidebar controls ─────────────────────────────────────────────────────────
